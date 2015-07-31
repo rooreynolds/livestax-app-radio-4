@@ -1,0 +1,32 @@
+<head>
+  <title>What's on BBC Radio 4 right now?</title>
+   <script src="//assets.livestax.com/livestax-0.2.0.min.js"></script>
+   <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+   <link href="//assets.livestax.com/theme-0.0.1.css" rel="stylesheet" type="text/css" media="all">
+</head>
+
+<body>
+<div class="container">
+<div id="result"></div>
+<hr>
+
+<script type="text/javascript">
+$.getJSON( "http://www.bbc.co.uk/radio4/programmes/schedules/fm.json", function( data ) {
+  var schedule=data.schedule.day.broadcasts
+  var myDate = new Date()
+  for (var i=0; i<schedule.length; i++) {
+    var startDate = Date.parse(schedule[i].start);
+    var endDate = Date.parse(schedule[i].end);
+    if (myDate > startDate && myDate < endDate) {
+      $("#result").append($("<h3>", {html: schedule[i].programme.display_titles.title, style: "font-weight:bold"}));
+      $("#result").append($("<h3>", {html: schedule[i].programme.display_titles.subtitle}));
+      $("#result").append($("<p>", {html: schedule[i].programme.short_synopsis}));
+      break;
+    }
+  }
+});
+</script>
+
+<div class="footer"><small>Data source: <a href="http://www.bbc.co.uk/programmes/">BBC</a></small></div>
+</div>
+</body>
